@@ -4,8 +4,8 @@ class Calculator {
       this.out = document.querySelector('.calc__result')
       this.firstNum = '';
       this.secondNum = '';
-      this.operand = '';
-      this.operands = document.querySelectorAll('.calc__btn_operator_side')
+      this.operator = '';
+      this.operators = document.querySelectorAll('.calc__btn_operator_side')
   }
 
   start = () => {
@@ -30,34 +30,34 @@ class Calculator {
     if(event.target.textContent === '%') this.handleProcent();
 
     //equals
-    if(event.target.textContent === '=' && this.secondNum !== '' && this.operand !== '') {
+    if(event.target.textContent === '=' && this.secondNum !== '' && this.operator !== '') {
         this.getResult();
     }
 
     if(event.target.classList.contains('number')) {                             //numbers
         this.handleNumbers(event);
-    }else if (event.target.classList.contains('calc__btn_operator_side')) {     //orange operand btns
+    }else if (event.target.classList.contains('calc__btn_operator_side')) {     //orange operator btns
         this.handleSideOperator(event);
     }
   }
 
   handleNumbers = (event) => {
-    if(this.operand === '' && this.firstNum.length < 9) {
+    if(this.operator === '' && this.firstNum.length < 9) {
         this.firstNum += event.target.textContent;
         this.out.textContent = this.firstNum;
-        console.log(this.firstNum, this.operand, this.secondNum);
-    } else if (this.operand !== '' && this.secondNum.length < 9) {
+        console.log(this.firstNum, this.operator, this.secondNum);
+    } else if (this.operator !== '' && this.secondNum.length < 9) {
         this.secondNum += event.target.textContent;
         this.out.textContent = this.secondNum;
         this.removeActiveOperator();
-        console.log(this.firstNum, this.operand, this.secondNum);
+        console.log(this.firstNum, this.operator, this.secondNum);
         return;
     }
   }
 
   getResult = () => {
     if(this.firstNum === '') this.firstNum = '0';
-        switch (this.operand) {
+        switch (this.operator) {
             case '÷':
                 this.firstNum = (+this.firstNum) / (+this.secondNum);
                 break;
@@ -73,7 +73,7 @@ class Calculator {
             
         }
         this.secondNum = '';
-        this.operand = '';
+        this.operator = '';
         this.firstNum === Infinity || isNaN(this.firstNum) ? this.out.textContent = 'Error' : this.out.textContent = this.firstNum;
         this.out.textContent.length > 5 ? this.addSmaller() : this.removeSmaller();
   }
@@ -81,22 +81,22 @@ class Calculator {
   AllClear = () => {
     this.firstNum = '';
     this.secondNum = '';
-    this.operand = '';
+    this.operator = '';
     this.out.textContent = '';
-    console.log(this.firstNum, this.operand, this.secondNum);
+    console.log(this.firstNum, this.operator, this.secondNum);
 
   }
 
   handleSideOperator = (event) => {
       if(event.target.textContent !== '=') {
-        if(this.operand && this.secondNum) {
+        if(this.operator && this.secondNum) {
           this.getResult();
           this.out.textContent = this.firstNum;
         }
-        this.operand = event.target.textContent;
-        // this.out.textContent = this.operand;
+        this.operator = event.target.textContent;
+        // this.out.textContent = this.operator;
         this.addActiveOperator(event);
-        console.log(this.firstNum, this.operand, this.secondNum);
+        console.log(this.firstNum, this.operator, this.secondNum);
       }
   }
 
@@ -104,7 +104,7 @@ class Calculator {
     event.target.classList.add('active')
   }
   removeActiveOperator = () => {
-    this.operands.forEach(item => {
+    this.operators.forEach(item => {
         item.classList.remove('active');
     })
   }
@@ -118,7 +118,7 @@ class Calculator {
   }
 
   handlePlusMinus = () => {
-    if (this.operand !== '') {
+    if (this.operator !== '') {
         this.secondNum = (-this.secondNum)
         this.out.textContent = this.secondNum;
     } else {
@@ -128,7 +128,7 @@ class Calculator {
   }
 
   handleProcent = () => {
-    if (this.operand !== '' && this.secondNum !== '' && this.firstNum !== '') {
+    if (this.operator !== '' && this.secondNum !== '' && this.firstNum !== '') {
         this.secondNum = (+this.firstNum) / 100 * (+this.secondNum);
         this.out.textContent = this.secondNum;
     } else if (this.firstNum !== '' && this.secondNum === '') {
